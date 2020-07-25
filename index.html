@@ -10,7 +10,7 @@
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="jumbotron jumbotron-fluid bg-dark">
@@ -20,27 +20,33 @@
     </div>
 
     <div class="container-fluid row">
-        <div "col-3">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search City">
-                <div class="input-group-append">
-                    <button id="Search-Btn" type="button" class="btn btn-outline-primary">Search</button>
-                </div>
-              </div>
-        </div>
-        <div "col-9">
-          
-        </div>
-
-        <div class="col-md-12">
-          <p id="FC-P" style="display: none;">5-Day Forecast</p>
-          <div id="forecast" class="row">
-
+      <div class="col-3">
+        <div class="input-group mb-3">
+          <input
+            id="input-city"
+            type="text"
+            class="form-control"
+            placeholder="Search City"
+          />
+          <div class="input-group-append">
+            <button
+              id="Search-Btn"
+              type="button"
+              class="btn btn-outline-primary"
+            >
+              Search
+            </button>
           </div>
-        </div> 
+        </div>
+      </div>
+      <div id="main-card" class="col-9"></div>
 
-
+      <div class="col-md-12">
+        <p id="FC-P" style="display: none;">5-Day Forecast</p>
+        <div id="forecast" class="row"></div>
+      </div>
     </div>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="javascript.js"></script>
   </body>
 </html>

@@ -44,3 +44,10 @@ You are required to submit the following for review:
 
 - - -
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+
+create intial files
+create basic html layout with rows and columns.
+create java script
+get api key
+creat global variables
+create event listeners for search.
