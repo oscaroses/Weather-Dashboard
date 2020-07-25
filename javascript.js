@@ -24,21 +24,20 @@ function getForecast(city) {
 
 
 
-
+    let date = response.dt
+    let cityDate = new Date(date * 1000).toLocaleDateString("en-US")
 
     var wIcon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
     var card = $("<div>").addClass("card");
     var cardBody = $("<div>").addClass("card-body")
-    var cityName = $("<h2>").addClass("card-title").text(response.name);
+    var cityName = $("<h2>").addClass("card-title").text(response.name + " " + "(" + cityDate + ")");
     var temperature = $("<p>").addClass("card-text current-temp").text("Temperature: " + response.main.temp + "°F");
     var humidity = $("<p>").addClass("card-text current-humidity").text("Humidity: " + response.main.humidity + "%");
     var windSpeed = $("<p>").addClass("card-text current-wind").text("Wind Speed: " + response.wind.speed + " MPH");
     $("#main-card").append(card)
     card.append(cardBody)
-    cardBody.append(cityName, wIcon, temperature, humidity, windSpeed)
+    cardBody.append(cityName, temperature, humidity, windSpeed)
+    $(".card-title").append(wIcon)
   });
-
-
-
 
 }
