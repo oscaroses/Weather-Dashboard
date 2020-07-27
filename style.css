@@ -14,3 +14,7 @@ h2 {
 input {
   margin-left: 25px;
 }
+
+.card-body {
+  background-color: grey;
+}

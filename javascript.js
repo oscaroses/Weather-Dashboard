@@ -1,14 +1,7 @@
+let cityHist = [];
 let city = " ";
 var apiKey = "d2dc4b5a67f8f43f9ff13956727536e2";
-
-$("#Search-Btn").on("click", function () {
-  if (city == " ") {
-    return;
-  } else {
-    var city = $("#input-city").val().trim();
-  }
-  getForecast(city);
-});
+var fiveMain = document.getElementById("FC-P")
 
 function getForecast(city) {
   let queryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey
@@ -85,7 +78,67 @@ function getForecast(city) {
     }
   })
 
+  function history(city) {
+    if (cityHist.length == 6) {
+      cityHist.splice(0, 1)
+    }
+    city = city.charAt(0).toUpperCase() + city.slice(1)
+    $("#cities").empty()
+    var citiesArr = {
+      city: city,
+    }
+    cityHist.push(citiesArr)
 
+    for (i = 0; i < cityHist.length; i++)
+      var history = $("<button>")
+    history.attr("class", "li-btn")
+    history.attr("data-li", i)
+    history.text(cityHist[i].city)
+
+    $("#cities").prepend(history)
+  }
+  localStorage.setItem("cityHist", JSON.stringify(cityHist))
 
 
 }
+
+function getHist() {
+
+  if (localStorage.getItem(cityHist) !== null) {
+    let loadHist = JSON.parse(localStorage.getItem(cityHist));
+    for (i = 0; i < cityHist.length; i++)
+      var history = $("<button>")
+    history.attr("class", "li-btn")
+    history.attr("data-li", i)
+    history.text(loadHist[i].city)
+
+    $("#cities").prepend(history)
+    var citiesArr = {
+      city = loadHist[i].city
+    }
+    cityHist.push(citiesArr)
+  }
+
+  var citySave = cityHist[cityHist.length - 1]
+  var cityLoad = citySave.city;
+  getForecast(cityLoad)
+}
+
+getHist()
+
+$("#Search-Btn").on("click", function () {
+  fiveMain.style.display = " "
+
+  if (city == " ") {
+    return;
+  } else {
+    var city = $("#input-city").val().trim();
+  }
+  getForecast(city);
+  history(city)
+});
+
+$(".li-btn").on("click", function () {
+  var histBtn = $(this).text()
+  getForecast(histBtn)
+})
