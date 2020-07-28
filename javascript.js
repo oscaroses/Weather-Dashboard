@@ -12,10 +12,7 @@ function getForecast(city) {
   }).then(function (response) {
     console.log(response);
 
-
     $("#main-card").empty()
-
-
 
     var date = response.dt
     var cityDate = new Date(date * 1000).toLocaleDateString("en-US")
@@ -31,7 +28,6 @@ function getForecast(city) {
     cardBody.append(cityName, temperature, humidity, windSpeed)
     $(".card-title").append(wIcon)
 
-
     let lat = response.coord.lat;
     let lon = response.coord.lon;
     let uvUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=" +
@@ -46,8 +42,23 @@ function getForecast(city) {
       method: "GET",
     }).then(function (uvresponse) {
       console.log(uvresponse);
-
+      let uvValue = uvresponse.value
       var uvButton = $("<button>").addClass("uv-btn")
+
+      if (uvValue <= 2) {
+        uvButton.attr("style", "background-color: green");
+      } else if (uvValue >= 3 && uvValue < 6) {
+        uvButton.attr("style", "background-color: yellow");
+      } else if (uvValue >= 6 && uvValue < 8) {
+        uvButton.attr("style", "background-color: orange");
+      } else if (uvValue >= 8 && uvValue < 11) {
+        uvButton.attr("style", "background-color: red");
+      } else if (uvValue >= 11) {
+        uvButton.attr("style", "background-color: darkviolet");
+      }
+
+
+
       uvButton.text(uvresponse.value)
       var uvText = $("<p>")
       uvText.text("UV: ")
@@ -109,7 +120,7 @@ function oldCity(city) {
   cityHist.push(citiesArr)
 
   for (i = 0; i < cityHist.length; i++) {
-    let history = $("<button>").addClass("history-btn")
+    let history = $("<button>").addClass("list-group-item history-btn")
     history.attr("class", "li-btn")
     history.attr("data-li", i)
     history.text(cityHist[i].city)
@@ -124,7 +135,7 @@ function getHist() {
   if (localStorage.getItem("cityHist") !== null) {
     let loadHist = JSON.parse(localStorage.getItem("cityHist"));
     for (i = 0; i < loadHist.length; i++) {
-      let history = $("<button>")
+      let history = $("<button>").addClass("list-group-item history-btn")
       history.attr("class", "li-btn")
       history.attr("data-li", i)
       history.text(loadHist[i].city)
@@ -145,7 +156,6 @@ getHist();
 
 $("#Search-Btn").on("click", function () {
   fiveMain.style.display = " "
-
   if (city == " ") {
     return;
   } else {
