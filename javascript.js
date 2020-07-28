@@ -1,5 +1,5 @@
 let cityHist = [];
-let city = "Bakersfield";
+let city = " ";
 var apiKey = "d2dc4b5a67f8f43f9ff13956727536e2";
 var fiveMain = document.getElementById("FC-P")
 
@@ -155,7 +155,7 @@ function getHist() {
 getHist();
 
 $("#Search-Btn").on("click", function () {
-  fiveMain.style.display = " "
+  fiveMain.style.display = "inline"
   if (city == " ") {
     return;
   } else {
