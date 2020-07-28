@@ -12,7 +12,7 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body onload="javascript:getForecast(city)">
     <div class="container-fluid">
       <div class="jumbotron jumbotron-fluid bg-dark">
         <div class="container">
@@ -20,35 +20,37 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid row">
-      <div class="col-3">
-        <div class="input-group mb-3">
-          <input
-            id="input-city"
-            type="text"
-            class="form-control"
-            placeholder="Search City"
-          />
-          <div class="input-group-append">
-            <button
-              id="Search-Btn"
-              type="button"
-              class="btn btn-outline-primary"
-            >
-              Search
-            </button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <input
+              id="input-city"
+              type="text"
+              class="form-control"
+              placeholder="Search City"
+            />
+            <div class="input-group-append">
+              <button
+                id="Search-Btn"
+                type="button"
+                class="btn btn-outline-primary"
+              >
+                Search
+              </button>
+            </div>
             <div>
               <ul id="cities" class="city-list"></ul>
             </div>
           </div>
         </div>
+        <div id="main-card" class="col-8"></div>
       </div>
-      <div id="main-card" class="col-9"></div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <h2 id="FC-P" style="display: none;">5-Day Forecast</h2>
-        <div id="forecast" class="row"></div>
+      <div class="row">
+        <div class="col-12">
+          <h2 id="FC-P" style="display: none;">5-Day Forecast</h2>
+          <div id="forecast" class="row"></div>
+        </div>
       </div>
     </div>
 

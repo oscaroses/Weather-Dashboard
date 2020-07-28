@@ -16,5 +16,16 @@ input {
 }
 
 .card-body {
-  background-color: grey;
+  background-color: whitesmoke;
+}
+
+.daily {
+  border-radius: 5px;
+  margin: 5px;
+  padding: 20px;
+  color: white;
+}
+
+.history-btn {
+  width: auto;
 }

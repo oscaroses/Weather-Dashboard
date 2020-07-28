@@ -1,5 +1,5 @@
 let cityHist = [];
-let city = " ";
+let city = "Bakersfield";
 var apiKey = "d2dc4b5a67f8f43f9ff13956727536e2";
 var fiveMain = document.getElementById("FC-P")
 
@@ -32,65 +32,84 @@ function getForecast(city) {
     $(".card-title").append(wIcon)
 
 
-    let lat = response.data.coord.lat;
-    let lon = response.data.coord.lon;
+    let lat = response.coord.lat;
+    let lon = response.coord.lon;
     let uvUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=" +
-      key +
+      apiKey +
       "&lat=" +
       lat +
       "&lon=" +
       lon;
+
+    $.ajax({
+      url: uvUrl,
+      method: "GET",
+    }).then(function (uvresponse) {
+      console.log(uvresponse);
+
+      var uvButton = $("<button>").addClass("uv-btn")
+      uvButton.text(uvresponse.value)
+      var uvText = $("<p>")
+      uvText.text("UV: ")
+      uvText.append(uvButton)
+      cardBody.append(uvText)
+    })
+
+    var dailyUrl =
+      "https://api.openweathermap.org/data/2.5/onecall?" +
+      "lat=" +
+      lat +
+      "&lon=" +
+      lon +
+      "&exclude=current,minutely,hourly&units=imperial&appid=" +
+      apiKey;
+
+
+    $.ajax({
+      url: dailyUrl,
+      method: "GET",
+    }).then(function (fiveresponse) {
+      console.log(response);
+      $("#forecast").empty()
+
+      for (i = 1; i < 6; i++) {
+        var fiveDay = new Date(fiveresponse.daily[i].dt * 1000).toLocaleDateString("en-US");
+        var dailyPic = fiveresponse.daily[i].weather[0].icon;
+        var dailyIcon = "https://openweathermap.org/img/wn/" + dailyPic + "@2x.png";
+
+        var dateCard = $("<div>").addClass("card-body bg-primary daily")
+        var iconImg = $("<img>").attr("src", dailyIcon)
+        iconImg.attr("alt", "Weather Icon")
+        var fiveHigh = fiveresponse.daily[i].temp.max;
+        var fiveLow = fiveresponse.daily[i].temp.min;
+        var fiveHum = fiveresponse.daily[i].humidity;
+
+        var info1 = $("<p>").text("High: " + fiveHigh)
+        var info2 = $("<p>").text("Low: " + fiveLow)
+        var info3 = $("<p>").text("Humidity: " + fiveHum)
+
+
+        dateCard.append(fiveDay, iconImg, info1, info2, info3)
+        $("#forecast").append(dateCard)
+      }
+    })
+
   });
+}
 
-  $.ajax({
+function oldCity(city) {
+  if (cityHist.length == 6) {
+    cityHist.splice(0, 1)
+  }
+  city = city.charAt(0).toUpperCase() + city.slice(1)
+  $("#cities").empty()
+  var citiesArr = {
+    city: city,
+  }
+  cityHist.push(citiesArr)
 
-    url: uvUrl,
-    method: "GET",
-  }).then(function (uvresponse) {
-    console.log(uvresponse);
-  })
-
-
-  $.ajax({
-    url: queryUrl,
-    method: "GET",
-  }).then(function (fiveresponse) {
-    console.log(response);
-
-    for (i = 0; i < 6; i++) {
-      var fiveDay = new Date(fiveresponse.daily[i].dt * 1000).toLocaleDateString("en-US");
-      var dailyPic = fiveresponse.daily[i].weather[0].icon;
-      var dailyIcon = "https://openweathermap.org/img/wn/" + dailyPic + "@2x.png";
-
-      var dateCard = $("<div>").addClass("card daily")
-      var iconImg = $("<img>").attr("src", dailyIcon)
-      iconImg.attr("alt", "Weather Icon")
-      var fiveHigh = fiveresponse.daily[i].temp.max;
-      var fiveLow = fiveresponse.daily[i].temp.min;
-      var fiveHum = fiveresponse.daily[i].humidity;
-
-      var info1 = $("<p>").text(fiveHigh)
-      var info2 = $("<p>").text(fiveLow)
-      var info3 = $("<p>").text(fiveHum)
-
-      $("#forecast").append(dateCard + i + fiveDay)
-      dateCard.append(info1, info2, info3)
-    }
-  })
-
-  function history(city) {
-    if (cityHist.length == 6) {
-      cityHist.splice(0, 1)
-    }
-    city = city.charAt(0).toUpperCase() + city.slice(1)
-    $("#cities").empty()
-    var citiesArr = {
-      city: city,
-    }
-    cityHist.push(citiesArr)
-
-    for (i = 0; i < cityHist.length; i++)
-      var history = $("<button>")
+  for (i = 0; i < cityHist.length; i++) {
+    let history = $("<button>").addClass("history-btn")
     history.attr("class", "li-btn")
     history.attr("data-li", i)
     history.text(cityHist[i].city)
@@ -98,33 +117,31 @@ function getForecast(city) {
     $("#cities").prepend(history)
   }
   localStorage.setItem("cityHist", JSON.stringify(cityHist))
-
-
 }
 
 function getHist() {
 
-  if (localStorage.getItem(cityHist) !== null) {
-    let loadHist = JSON.parse(localStorage.getItem(cityHist));
-    for (i = 0; i < cityHist.length; i++)
-      var history = $("<button>")
-    history.attr("class", "li-btn")
-    history.attr("data-li", i)
-    history.text(loadHist[i].city)
+  if (localStorage.getItem("cityHist") !== null) {
+    let loadHist = JSON.parse(localStorage.getItem("cityHist"));
+    for (i = 0; i < loadHist.length; i++) {
+      let history = $("<button>")
+      history.attr("class", "li-btn")
+      history.attr("data-li", i)
+      history.text(loadHist[i].city)
 
-    $("#cities").prepend(history)
-    var citiesArr = {
-      city = loadHist[i].city
+      $("#cities").prepend(history)
+      var citiesArr = {
+        city: loadHist[i].city
+      }
+      cityHist.push(citiesArr)
     }
-    cityHist.push(citiesArr)
+    var citySave = cityHist[cityHist.length - 1]
+    var cityLoad = citySave.city;
+    getForecast(cityLoad)
   }
-
-  var citySave = cityHist[cityHist.length - 1]
-  var cityLoad = citySave.city;
-  getForecast(cityLoad)
 }
 
-getHist()
+getHist();
 
 $("#Search-Btn").on("click", function () {
   fiveMain.style.display = " "
@@ -135,7 +152,7 @@ $("#Search-Btn").on("click", function () {
     var city = $("#input-city").val().trim();
   }
   getForecast(city);
-  history(city)
+  oldCity(city)
 });
 
 $(".li-btn").on("click", function () {
