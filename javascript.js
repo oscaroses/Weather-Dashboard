@@ -1,11 +1,14 @@
 //Global variables
 let cityHist = [];
-let city = " ";
 var apiKey = "d2dc4b5a67f8f43f9ff13956727536e2";
 var fiveMain = document.getElementById("FC-P")
 
 //This is the main function that gets the city information through out the code.
 function getForecast(city) {
+  if (!city) {
+    city = "Bakersfield"
+  }
+  console.log(city)
   let queryUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey
 
   //Here we get the info for the searched city, then append it to the html us ing JQuery.
@@ -160,13 +163,13 @@ function getHist() {
 }
 getHist();
 
-//This is an event listener for the search button.
+//This is an event listener for the search button. The 5-day forecast is displayed when the buttons are pressed.
 $("#Search-Btn").on("click", function () {
+  console.log("hi")
   fiveMain.style.display = "inline"
-  if (city == " ") {
-    return;
-  } else {
-    var city = $("#input-city").val().trim();
+  var city = $("#input-city").val().trim();
+  if (!city) {
+    city = "Bakersfield"
   }
   getForecast(city);
   oldCity(city)
